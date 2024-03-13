@@ -17,9 +17,9 @@ import argparse
 # 用argparse来解析命令行参数
 parser = argparse.ArgumentParser()
 parser.add_argument("--model_name", type=str, default="Resnet50", help="模型名称")
-parser.add_argument("--dataset_name", type=str, default="flowers", help="数据集名称")
-parser.add_argument("--pretrain", type=bool, default=False, help="是否加载预训练模型")
-parser.add_argument("--epochs", type=int, default=50, help="训练轮数")
+parser.add_argument("--dataset_name", type=str, default="Rice Leaf Disease Images", help="数据集名称")
+parser.add_argument("--pretrain", type=bool, default=True, help="是否加载预训练模型")
+parser.add_argument("--epochs", type=int, default=20, help="训练轮数")
 args = parser.parse_args()
 
 # 定义超参数

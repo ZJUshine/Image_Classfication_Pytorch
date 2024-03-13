@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
 
         uic.loadUi('main.ui', self) # 加载ui文件
 
-        self.DATASET_NAME = "flowers" # 数据集名称
+        self.DATASET_NAME = "Rice Leaf Disease Images" # 数据集名称
         self.MODEL_NAME = "Resnet50" # 模型名称
         datasets_path = f'datasets/{self.DATASET_NAME}_process/train' # 数据集路径
 

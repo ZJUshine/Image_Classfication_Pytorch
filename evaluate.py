@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 
 # 定义参数
 MODEL_NAME = "Resnet50" # 模型名称
-DATASET_NAME = "flowers" # 数据集名称
-PRETRAIN = False # 是否使用预训练模型
+DATASET_NAME = "Rice Leaf Disease Images" # 数据集名称
+PRETRAIN = True # 是否使用预训练模型
 
 # 模型路径
 MODEL_PATH = f'./models/{DATASET_NAME}_{MODEL_NAME}/{DATASET_NAME}_{MODEL_NAME}_Pretrained_{PRETRAIN}_best.pth'

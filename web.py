@@ -6,8 +6,8 @@ import gradio as gr
 import os
 
 MODEL_NAME = "Resnet50" # 模型名称
-DATASET_NAME = "flowers" # 数据集名称
-PRETRAIN = False # 是否使用预训练模型
+DATASET_NAME = "Rice Leaf Disease Images" # 数据集名称
+PRETRAIN = True # 是否使用预训练模型
 datasets_path = f'datasets/{DATASET_NAME}_process/train' # 数据集路径
 # 获取路径下所有的labels
 labels = [d.name for d in os.scandir(datasets_path) if d.is_dir()]
