@@ -16,9 +16,9 @@ import argparse
 
 # 用argparse来解析命令行参数
 parser = argparse.ArgumentParser()
-parser.add_argument("--model_name", type=str, default="", help="模型名称")
-parser.add_argument("--dataset_name", type=str, default="", help="数据集名称")
-parser.add_argument("--pretrain", type=bool, default=True, help="是否加载预训练模型")
+parser.add_argument("--model_name", type=str, default="Resnet50", help="模型名称")
+parser.add_argument("--dataset_name", type=str, default="flowers", help="数据集名称")
+parser.add_argument("--pretrain", type=bool, default=False, help="是否加载预训练模型")
 parser.add_argument("--epochs", type=int, default=50, help="训练轮数")
 args = parser.parse_args()
 
@@ -105,7 +105,7 @@ if MODEL_NAME == "Resnet50":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.fc = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "EfficientNet":
     if PRETRAIN == True:
@@ -123,7 +123,7 @@ elif MODEL_NAME == "EfficientNet":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "densenet169":
     if PRETRAIN == True:
@@ -141,7 +141,7 @@ elif MODEL_NAME == "densenet169":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.classifier = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "vgg16":
     if PRETRAIN == True:
@@ -159,7 +159,7 @@ elif MODEL_NAME == "vgg16":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "mobilenet_v3_small":
     if PRETRAIN == True:
@@ -177,7 +177,7 @@ elif MODEL_NAME == "mobilenet_v3_small":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "vgg19":
     if PRETRAIN == True:
@@ -195,7 +195,7 @@ elif MODEL_NAME == "vgg19":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
     transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 elif MODEL_NAME == "vit":
     if PRETRAIN == True:
@@ -214,7 +214,7 @@ elif MODEL_NAME == "vit":
     # 修改最后一层维数，即把原来的全连接层替换成输出维数为CLASS_NUM的全连接层
     transfer_model.heads.head = nn.Linear(dim, CLASS_NUM)
     # 将模型加载到GPU上
-    transfer_model.to(device)
+    transfer_model = transfer_model.to(device)
 
 # 损失函数和优化器
 criterion = nn.CrossEntropyLoss()

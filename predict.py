@@ -8,9 +8,9 @@ import numpy as np
 import random
 
 # 定义超参数
-MODEL_NAME = "vit" # 模型名称
-DATASET_NAME = "Howard_Cloud" # 数据集名称
-PRETRAIN = True # 是否使用预训练模型
+MODEL_NAME = "Resnet50" # 模型名称
+DATASET_NAME = "flowers" # 数据集名称
+PRETRAIN = False # 是否使用预训练模型
 BATCH_SIZE = 10 # 取10张图片进行预测
 
 # 模型路径
@@ -73,6 +73,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print("使用设备：",device)
 # 加载模型
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model = model.to(device)
 model.eval()
 
 # 随机选择10张图片

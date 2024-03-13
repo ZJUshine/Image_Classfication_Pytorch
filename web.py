@@ -5,9 +5,9 @@ from torch import nn
 import gradio as gr
 import os
 
-MODEL_NAME = "vit" # 模型名称
-DATASET_NAME = "" # 数据集名称
-PRETRAIN = True # 是否使用预训练模型
+MODEL_NAME = "Resnet50" # 模型名称
+DATASET_NAME = "flowers" # 数据集名称
+PRETRAIN = False # 是否使用预训练模型
 datasets_path = f'datasets/{DATASET_NAME}_process/train' # 数据集路径
 # 获取路径下所有的labels
 labels = [d.name for d in os.scandir(datasets_path) if d.is_dir()]
@@ -47,6 +47,7 @@ elif MODEL_NAME == "vit":
     model.heads.head = nn.Linear(dim, CLASS_NUM)
 
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model = model.to(device)
 model.eval()
 
 transform = transforms.Compose([

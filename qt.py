@@ -14,12 +14,13 @@ class MainWindow(QMainWindow):
 
         uic.loadUi('main.ui', self) # 加载ui文件
 
-        self.DATASET_NAME = "Howard_Cloud" # 数据集名称
-        self.MODEL_NAME = "vit" # 模型名称
+        self.DATASET_NAME = "flowers" # 数据集名称
+        self.MODEL_NAME = "Resnet50" # 模型名称
         datasets_path = f'datasets/{self.DATASET_NAME}_process/train' # 数据集路径
 
         # 获取路径下所有的labels
         self.class_names = [d.name for d in os.scandir(datasets_path) if d.is_dir()]
+        print(self.class_names)
         self.CLASS_NUM = len(self.class_names)
 
         self.model = None
@@ -27,6 +28,7 @@ class MainWindow(QMainWindow):
         
         # 检测是否有可用的GPU
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        print(f"Using {self.device}")
 
         self.pushButton_model.clicked.connect(self.select_model) # 建立点击事件与选择模型函数连接
         self.pushButton_image.clicked.connect(self.select_image) # 建立点击事件与选择图片函数连接
@@ -58,6 +60,7 @@ class MainWindow(QMainWindow):
 
         # 加载模型
         self.model.load_state_dict(torch.load(self.modelpath, map_location=self.device))
+        self.model = self.model.to(self.device)
         self.model.eval()
 
     def select_image(self):
