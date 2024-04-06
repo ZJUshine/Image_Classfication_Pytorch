@@ -1,6 +1,14 @@
 # Image_Classfication_Pytorch
 
-## Dataset_process
+# 安装python环境
+
+进入conda虚拟环境，在终端中运行
+
+```
+pip install -r requirements.txt
+```
+
+# Dataset_process
 
 将数据集按照以下格式处理好放入datasets
 

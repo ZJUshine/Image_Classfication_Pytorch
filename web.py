@@ -70,4 +70,4 @@ predict_app = gr.Interface(
     title="图像分类",
     description="上传一张图片，模型将预测图片的类别。"
 )
-predict_app.launch()
+predict_app.launch(share = True)
