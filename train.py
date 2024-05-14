@@ -6,13 +6,14 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torchvision import datasets, transforms, models
+from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 import os
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import argparse
+from utils import get_model
 
 # 用argparse来解析命令行参数
 parser = argparse.ArgumentParser()
@@ -23,7 +24,7 @@ parser.add_argument("--epochs", type=int, default=20, help="训练轮数")
 args = parser.parse_args()
 
 # 定义超参数
-BATCH_SIZE = 16
+BATCH_SIZE = 32
 LEARNING_RATE = 0.001
 EPOCHS = args.epochs
 MODEL_NAME = args.model_name
@@ -88,133 +89,8 @@ val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
 print("Model_name:",MODEL_NAME)
 
 # 加载不同种类的模型
-
-if MODEL_NAME == "Resnet50":
-    if PRETRAIN == True:
-        # 加载预训练的resnet50模型
-        transfer_model = models.resnet50(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的resnet50模型
-        transfer_model = models.resnet50(pretrained=False)
-
-    # 提取fc层中固定的参数
-    dim = transfer_model.fc.in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.fc = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "EfficientNet":
-    if PRETRAIN == True:
-        # 加载预训练的EfficientNet模型
-        transfer_model = models.efficientnet_b3(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的EfficientNet模型
-        transfer_model = models.efficientnet_b3(pretrained=False)
-
-    # 提取classifier层中固定的参数
-    dim = transfer_model.classifier[-1].in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "densenet169":
-    if PRETRAIN == True:
-        # 加载预训练的densenet169模型
-        transfer_model = models.densenet169(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的densenet169模型
-        transfer_model = models.densenet169(pretrained=False)
-
-    # 提取classifier层中固定的参数
-    dim = transfer_model.classifier.in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.classifier = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "vgg16":
-    if PRETRAIN == True:
-        # 加载预训练的vgg16模型
-        transfer_model = models.vgg16(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的vgg16模型
-        transfer_model = models.vgg16(pretrained=False)
-
-    # 提取classifier层中固定的参数
-    dim = transfer_model.classifier[-1].in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "mobilenet_v3_small":
-    if PRETRAIN == True:
-        # 加载预训练的vmobilenet_v3_small模型
-        transfer_model = models.mobilenet_v3_small(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的mobilenet_v3_small模型
-        transfer_model = models.mobilenet_v3_small(pretrained=False)
-
-    # 提取classifier层中固定的参数
-    dim = transfer_model.classifier[-1].in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "vgg19":
-    if PRETRAIN == True:
-        # 加载预训练的vgg19模型
-        transfer_model = models.vgg19(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的vgg19模型
-        transfer_model = models.vgg19(pretrained=False)
-
-    # 提取classifier层中固定的参数
-    dim = transfer_model.classifier[-1].in_features
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为2的全连接层
-    transfer_model.classifier[-1] = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
-
-elif MODEL_NAME == "vit":
-    if PRETRAIN == True:
-        # 加载预训练的vit模型
-        transfer_model = models.vit_b_16(pretrained=True)
-        # 冻结模型的参数
-        for param in transfer_model.parameters():
-            param.requires_grad = False
-    else:
-        # 不加载预训练的vit模型
-        transfer_model = models.vit_b_16(pretrained=False)
-
-    # 提取head层中固定的参数
-    dim = transfer_model.heads.head.in_features
-
-    # 修改最后一层维数，即把原来的全连接层替换成输出维数为CLASS_NUM的全连接层
-    transfer_model.heads.head = nn.Linear(dim, CLASS_NUM)
-    # 将模型加载到GPU上
-    transfer_model = transfer_model.to(device)
+transfer_model = get_model(MODEL_NAME, PRETRAIN, CLASS_NUM)
+transfer_model = transfer_model.to(device)
 
 # 损失函数和优化器
 criterion = nn.CrossEntropyLoss()
