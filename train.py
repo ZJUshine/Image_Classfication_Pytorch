@@ -38,7 +38,7 @@ PRETRAIN = args.pretrain
 # 创建文件夹来保存模型权重、结果图像和CSV文件
 os.makedirs(f"models/{DATASET_NAME}_{MODEL_NAME}", exist_ok=True)
 os.makedirs(f"images/{DATASET_NAME}_{MODEL_NAME}", exist_ok=True)
-os.makedirs("csv/{DATASET_NAME}_{MODEL_NAME}", exist_ok=True)
+os.makedirs(f"csv/{DATASET_NAME}_{MODEL_NAME}", exist_ok=True)
 
 # 创建一个SummaryWriter实例
 writer = SummaryWriter(f'runs/{DATASET_NAME}_{MODEL_NAME}_Pretrained_{PRETRAIN}_experiment')
