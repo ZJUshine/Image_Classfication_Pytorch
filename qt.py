@@ -7,7 +7,7 @@ from torchvision import transforms, models
 from torch import nn
 from PIL import Image
 import os
-
+from utils import get_model
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -36,28 +36,7 @@ class MainWindow(QMainWindow):
 
     def select_model(self):
         self.modelpath, _ = QFileDialog.getOpenFileName(self, "选择模型") # 打开文件对话框来选择模型 
-        if self.MODEL_NAME == "Resnet50":
-            self.model = models.resnet50(pretrained=False)
-            self.model.fc = nn.Linear(self.model.fc.in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "EfficientNet":
-            self.model = models.efficientnet_b3(pretrained=False)
-            self.model.classifier[-1] = nn.Linear(self.model.classifier[-1].in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "vgg16":
-            self.model = models.vgg16(pretrained=False)
-            self.model.classifier[6] = nn.Linear(self.model.classifier[6].in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "vgg19":
-            self.model = models.vgg19(pretrained=False)
-            self.model.classifier[6] = nn.Linear(self.model.classifier[6].in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "densenet169":
-            self.model = models.densenet169(pretrained=False)
-            self.model.classifier = nn.Linear(self.model.classifier.in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "mobilenet_v3_small":
-            self.model = models.mobilenet_v3_small(pretrained=False)
-            self.model.classifier[3] = nn.Linear(self.model.classifier[3].in_features, self.CLASS_NUM)
-        elif self.MODEL_NAME == "vit":
-            self.model = models.vit_b_16(pretrained=False)
-            self.model.heads.head = nn.Linear(self.model.heads.head.in_features, self.CLASS_NUM)
-
+        self.model = get_model(self.MODEL_NAME, False, self.CLASS_NUM)
         # 加载模型
         self.model.load_state_dict(torch.load(self.modelpath, map_location=self.device))
         self.model = self.model.to(self.device)

@@ -5,7 +5,7 @@ import random
 import glob
 
 # 数据集文件夹名称
-DATASET_NAME = "Rice Leaf Disease Images"
+DATASET_NAME = ""
 
 # 数据集文件夹路径
 data_dir = f"./datasets/{DATASET_NAME}"

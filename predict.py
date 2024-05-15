@@ -6,10 +6,11 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+from utils import get_model
 
 # 定义超参数
-MODEL_NAME = "Resnet50" # 模型名称
-DATASET_NAME = "Rice Leaf Disease Images" # 数据集名称
+MODEL_NAME = "" # 模型名称
+DATASET_NAME = "" # 数据集名称
 PRETRAIN = True # 是否使用预训练模型
 BATCH_SIZE = 10 # 取10张图片进行预测
 
@@ -45,28 +46,7 @@ CLASS_NUM = len(dataset.classes)
 data_loader = DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
 
 # 定义模型
-if MODEL_NAME == "Resnet50":
-    model = models.resnet50(pretrained=False)
-    model.fc = nn.Linear(model.fc.in_features, CLASS_NUM)
-elif MODEL_NAME == "EfficientNet":
-    model = models.efficientnet_b3(pretrained=False)
-    model.classifier[-1] = nn.Linear(model.classifier[-1].in_features, CLASS_NUM)
-elif MODEL_NAME == "vgg16":
-    model = models.vgg16(pretrained=False)
-    model.classifier[6] = nn.Linear(model.classifier[6].in_features, CLASS_NUM)
-elif MODEL_NAME == "vgg19":
-    model = models.vgg19(pretrained=False)
-    model.classifier[6] = nn.Linear(model.classifier[6].in_features, CLASS_NUM)
-elif MODEL_NAME == "densenet169":
-    model = models.densenet169(pretrained=False)
-    model.classifier = nn.Linear(model.classifier.in_features, CLASS_NUM)
-elif MODEL_NAME == "mobilenet_v3_small":
-    model = models.mobilenet_v3_small(pretrained=False)
-    model.classifier[3] = nn.Linear(model.classifier[3].in_features, CLASS_NUM)
-elif MODEL_NAME == "vit":
-    model = models.vit_b_16(pretrained=False)
-    model.heads.head = nn.Linear(model.heads.head.in_features, CLASS_NUM)
-
+model = get_model(MODEL_NAME, PRETRAIN, CLASS_NUM)
 
 # 检测是否有可用的GPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

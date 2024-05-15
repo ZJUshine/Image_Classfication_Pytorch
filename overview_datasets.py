@@ -38,7 +38,7 @@ def plot_image_counts(image_counts):
     plt.savefig("datasets_overview.png")
 
 # 设置主文件夹路径
-main_folder_path = './datasets/trash'
+main_folder_path = './datasets/'
 
 # 统计每个子文件夹中的图片数量
 image_counts = count_images_in_subfolders(main_folder_path)

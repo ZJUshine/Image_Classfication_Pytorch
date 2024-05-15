@@ -5,10 +5,11 @@ from torch import nn
 from sklearn.metrics import confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
+from utils import get_model
 
 # 定义参数
-MODEL_NAME = "Resnet50" # 模型名称
-DATASET_NAME = "Rice Leaf Disease Images" # 数据集名称
+MODEL_NAME = "" # 模型名称
+DATASET_NAME = "" # 数据集名称
 PRETRAIN = True # 是否使用预训练模型
 
 # 模型路径
@@ -29,27 +30,7 @@ CLASS_NUM = len(val_dataset.classes)
 print("类别数：", CLASS_NUM)
 
 # 定义模型
-if MODEL_NAME == "Resnet50":
-    model = models.resnet50(pretrained=PRETRAIN)
-    model.fc = nn.Linear(model.fc.in_features, CLASS_NUM)
-elif MODEL_NAME == "EfficientNet":
-    model = models.efficientnet_b3(pretrained=PRETRAIN)
-    model.classifier[-1] = nn.Linear(model.classifier[-1].in_features, CLASS_NUM)
-elif MODEL_NAME == "vgg16":
-    model = models.vgg16(pretrained=PRETRAIN)
-    model.classifier[6] = nn.Linear(model.classifier[6].in_features, CLASS_NUM)
-elif MODEL_NAME == "vgg19":
-    model = models.vgg19(pretrained=PRETRAIN)
-    model.classifier[6] = nn.Linear(model.classifier[6].in_features, CLASS_NUM)
-elif MODEL_NAME == "densenet169":
-    model = models.densenet169(pretrained=PRETRAIN)
-    model.classifier = nn.Linear(model.classifier.in_features, CLASS_NUM)
-elif MODEL_NAME == "mobilenet_v3_small":
-    model = models.mobilenet_v3_small(pretrained=PRETRAIN)
-    model.classifier[3] = nn.Linear(model.classifier[3].in_features, CLASS_NUM)
-elif MODEL_NAME == "vit":
-    model = models.vit_b_16(pretrained=False)
-    model.heads.head = nn.Linear(model.heads.head.in_features, CLASS_NUM)
+model = get_model(MODEL_NAME, PRETRAIN, CLASS_NUM)
 
 # 检测是否有可用的GPU
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -58,7 +39,6 @@ print("使用设备：",device)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 model = model.to(device)
 model.eval()
-
 
 # 预测并收集标签
 all_preds = []
