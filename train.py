@@ -17,14 +17,14 @@ from utils import get_model
 
 # 用argparse来解析命令行参数
 parser = argparse.ArgumentParser()
-parser.add_argument("--model_name", type=str, default="Resnet50", help="模型名称")
-parser.add_argument("--dataset_name", type=str, default="Rice Leaf Disease Images", help="数据集名称")
-parser.add_argument("--pretrain", type=bool, default=True, help="是否加载预训练模型")
-parser.add_argument("--epochs", type=int, default=20, help="训练轮数")
+parser.add_argument("--model_name", type=str, default="resnet", help="模型名称")
+parser.add_argument("--dataset_name", type=str, default="trash", help="数据集名称")
+parser.add_argument("--pretrain", type=bool, default=False, help="是否加载预训练模型")
+parser.add_argument("--epochs", type=int, default=50, help="训练轮数")
 args = parser.parse_args()
 
 # 定义超参数
-BATCH_SIZE = 32
+BATCH_SIZE = 128
 LEARNING_RATE = 0.001
 EPOCHS = args.epochs
 MODEL_NAME = args.model_name
@@ -81,7 +81,7 @@ print("验证集大小：",len(val_dataset))
 print("类别：",train_dataset.classes)
 print("类别对应的索引：",train_dataset.class_to_idx)
 CLASS_NUM = len(train_dataset.classes)
-
+print("类别数量为",CLASS_NUM)
 # 加载train和val数据集
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)

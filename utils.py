@@ -16,7 +16,7 @@ def get_model(model_name ,pretrain, class_num):
         # 修改最后一层维数，即把原来的全连接层替换成输出维数为class_num的全连接层
         transfer_model.classifier[-1] = nn.Linear(transfer_model.classifier[-1].in_features, class_num)
     
-    elif model_name == "resnet50":
+    elif model_name == "resnet":
         if pretrain == True:
             # 加载预训练的resnet50模型
             transfer_model = models.resnet50(pretrained=True)
